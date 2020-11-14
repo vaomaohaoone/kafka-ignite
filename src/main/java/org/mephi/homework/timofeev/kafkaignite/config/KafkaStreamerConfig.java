@@ -8,31 +8,39 @@ import org.apache.ignite.IgniteDataStreamer;
 import org.apache.ignite.stream.kafka.KafkaStreamer;
 import org.mephi.homework.timofeev.kafkaignite.data.CitizenRowAbroadTrips;
 import org.mephi.homework.timofeev.kafkaignite.data.CitizenRowSalary;
-import org.mephi.homework.timofeev.kafkaignite.properties.AppProperties;
-import org.mephi.homework.timofeev.kafkaignite.properties.KafkaConsumerProperties;
+import org.mephi.homework.timofeev.kafkaignite.properties.KafkaAppProperties;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.*;
 
+/**
+ * Класс конфигурации стриминга данных из Kafka в Ignite
+ */
 @Configuration
 @RequiredArgsConstructor
 public class KafkaStreamerConfig {
 
-    private final AppProperties appProperties;
-
+    private final KafkaAppProperties kafkaAppProperties;
     private final ObjectMapper objectMapper;
+    @Qualifier("consumerProperties")
+    private final Properties consumerProperties;
 
-    private final KafkaConsumerProperties kafkaConsumerProperties;
-
+    /**
+     * Бин создания KafkaStreamer объекта для CitizenRowAbroadTrips данных
+     * @param igniteDataStreamerTrips - ignite data streamer для стриминга CitizenRowAbroadTrips из Kafka
+     * @param igniteInstance - запущенный инстанс игнайта
+     * @return объект KafkaStreamer
+     */
     @Bean(destroyMethod = "stop")
     public KafkaStreamer<UUID, CitizenRowAbroadTrips> kafkaStreamerTrips(IgniteDataStreamer<UUID, CitizenRowAbroadTrips> igniteDataStreamerTrips, Ignite igniteInstance) {
         KafkaStreamer<UUID, CitizenRowAbroadTrips> kafkaStreamer = new KafkaStreamer<>();
         kafkaStreamer.setIgnite(igniteInstance);
         kafkaStreamer.setStreamer(igniteDataStreamerTrips);
-        kafkaStreamer.setTopic(Collections.singletonList(appProperties.getKafkaTripsTopic()));
+        kafkaStreamer.setTopic(Collections.singletonList(kafkaAppProperties.getTripsTopic()));
         kafkaStreamer.setThreads(1);
-        kafkaStreamer.setConsumerConfig(kafkaConsumerProperties.getProperties());
+        kafkaStreamer.setConsumerConfig(consumerProperties);
         kafkaStreamer.setSingleTupleExtractor(msg -> {
             try {
                 CitizenRowAbroadTrips value = objectMapper.readValue(msg.value().toString(), CitizenRowAbroadTrips.class);
@@ -45,14 +53,20 @@ public class KafkaStreamerConfig {
         return kafkaStreamer;
     }
 
+    /**
+     * Бин создания KafkaStreamer объекта для CitizenRowSalary данных
+     * @param igniteDataStreamerSalary - ignite data streamer для стриминга CitizenRowSalary из Kafka
+     * @param igniteInstance - запущенный инстанс игнайта
+     * @return объект KafkaStreamer
+     */
     @Bean(destroyMethod = "stop")
     public KafkaStreamer<UUID, CitizenRowSalary> kafkaStreamerSalary(IgniteDataStreamer<UUID, CitizenRowSalary> igniteDataStreamerSalary, Ignite igniteInstance) {
         KafkaStreamer<UUID, CitizenRowSalary> kafkaStreamer = new KafkaStreamer<>();
         kafkaStreamer.setIgnite(igniteInstance);
         kafkaStreamer.setStreamer(igniteDataStreamerSalary);
-        kafkaStreamer.setTopic(Collections.singletonList(appProperties.getKafkaSalaryTopic()));
+        kafkaStreamer.setTopic(Collections.singletonList(kafkaAppProperties.getSalaryTopic()));
         kafkaStreamer.setThreads(1);
-        kafkaStreamer.setConsumerConfig(kafkaConsumerProperties.getProperties());
+        kafkaStreamer.setConsumerConfig(consumerProperties);
         kafkaStreamer.setSingleTupleExtractor(msg -> {
             try {
                 CitizenRowSalary value = objectMapper.readValue(msg.value().toString(), CitizenRowSalary.class);

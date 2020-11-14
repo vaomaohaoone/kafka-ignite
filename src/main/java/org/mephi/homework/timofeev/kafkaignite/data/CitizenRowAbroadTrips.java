@@ -10,19 +10,31 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * POJO класс информации о гражданах первого типа
+ */
 @Data
 @AllArgsConstructor
 public class CitizenRowAbroadTrips implements Serializable {
 
+    /**
+     * Номер паспорта
+     */
     @QuerySqlField(index = true)
     private UUID passportId;
 
+    /**
+     * Возраст
+     */
     @Max(100)
     @Min(18)
     @QuerySqlField(index = true)
     @AffinityKeyMapped
     private Integer age;
 
+    /**
+     * Количество заграничных поездок
+     */
     @Max(100)
     @Min(0)
     @QuerySqlField(index = true)

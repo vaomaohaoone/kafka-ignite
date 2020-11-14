@@ -2,19 +2,16 @@ spring:
   application:
     name: kafka-ignite
 
-app:
-  kafka:
-    trips-topic: trips-topic
-    salary-topic: salary-topic
-    producer:
-      trips-id: trips
-      salary-id: salary
-    consumer:
-      group-id: ignite
-    bootstrap-servers: "172.20.0.1:32772"
-  ignite:
-    cache-name: app-cache
-    streamer:
-      flush-frequency: 5000
+kafka:
+  trips-topic: trips-topic
+  salary-topic: salary-topic
+  producer-trips-id: trips
+  producer-salary-id: salary
+  consumer-group-id: ignite
+  bootstrap-servers: "172.18.0.1:32770"
+ignite:
+  cache-name: app-cache
+  storage-path: /home/kir/IdeaProjects/kafka-ignite/storage
+  streamer-flush-frequency: 5000
 server:
   port: 8085
