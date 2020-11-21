@@ -61,7 +61,7 @@ import static org.mephi.homework.timofeev.kafkaignite.utils.AppRandomUtils.*;
         }
 )
 @DirtiesContext
-public class TestKafkaBroker {
+public class TestApp {
 
     @Autowired
     private ProducerService producerService;
