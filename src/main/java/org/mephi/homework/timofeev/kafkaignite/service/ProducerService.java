@@ -39,7 +39,7 @@ public class ProducerService {
      * Метод отправки CitizenRowSalary в Kafka
      * @param citizenRowSalary - запись CitizenRowSalary
      */
-    private void sendCitizenRowSalary(CitizenRowSalary citizenRowSalary) {
+    public void sendCitizenRowSalary(CitizenRowSalary citizenRowSalary) {
         log.info("<= sending CitizenRowSalary {}", writeValueAsString(citizenRowSalary));
         kafkaTemplateCitizenRowSalary.send(kafkaAppProperties.getSalaryTopic(), citizenRowSalary);
     }
@@ -47,7 +47,7 @@ public class ProducerService {
     /** Метод отправки CitizenRowAbroadTrips в Kafka
      * @param citizenRowAbroadTrips - запись CitizenRowAbroadTrips
      */
-    private void sendCitizenRowRowAbroadTrips(CitizenRowAbroadTrips citizenRowAbroadTrips) {
+    public void sendCitizenRowRowAbroadTrips(CitizenRowAbroadTrips citizenRowAbroadTrips) {
         log.info("<= sending CitizenRowAbroadTrips {}", writeValueAsString(citizenRowAbroadTrips));
         kafkaTemplateCitizenRowAbroadTrips.send(kafkaAppProperties.getTripsTopic(), citizenRowAbroadTrips);
     }
@@ -55,7 +55,7 @@ public class ProducerService {
     /**
      * Метод генерации данных о гражданине и отправка в Kafka
      */
-    private void sendRows() {
+    public void sendRows() {
         UUID passportId = generateRandomPassportId();
         Set<Integer> monthList = generateRandomMonthList();
         monthList.forEach(month -> {

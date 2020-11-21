@@ -4,8 +4,18 @@ kafka:
   producer-trips-id: trips
   producer-salary-id: salary
   consumer-group-id: ignite
-  bootstrap-servers: "localhost:9092"
+  bootstrap-servers: "localhost:3333"
 ignite:
-  cache-name: app-cache
-  storage-path: /home/kir/IdeaProjects/kafka-ignite/storage-test
-  streamer-flush-frequency: 5000
+  cache-name: app-test-cache
+  streamer-flush-frequency: 1000
+
+batch:
+  num: 10
+
+listener:
+  work-time: 10
+
+spring:
+  resources:
+    # disable serving of static web files since this is a REST/Actuator only web app
+    add-mappings: false
