@@ -2,6 +2,7 @@ package org.mephi.homework.timofeev.kafkaignite.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.ignite.cache.affinity.AffinityKeyMapped;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CitizenRowSalary implements Serializable {
 
     /**
